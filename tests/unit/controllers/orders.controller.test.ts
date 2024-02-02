@@ -2,17 +2,49 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { Request, Response } from 'express';
+import orderService from '../../../src/service/order.service';
+import orderController from '../../../src/controller/orderController'
+import OrderModel from '../../../src/database/models/order.model';
+
 
 chai.use(sinonChai);
 
 describe('OrdersController', function () {
-  const req = {} as Request;
-  const res = {} as Response;
+  let req: Partial<Request>;
+  let res: Partial<Response>;
+  let statusSpy: sinon.SinonSpy;
+  let jsonSpy: sinon.SinonSpy;
 
   beforeEach(function () {
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns(res);
     sinon.restore();
+    req = {};
+    res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+      send: sinon.stub().returnsThis(),
+    };
+  });
+  afterEach(function () {
+    sinon.restore(); // Restaura todos os stubs/spies após cada teste
   });
 
+  it('deve responder com status 200 e uma lista de pedidos quando getOrderWithProducts for bem-sucedido', async function () {
+    const mockedOrders = [{ id: 1, userId: 1, productIds: [1, 2] }];
+    sinon.stub(orderService, 'getOrderWithProducts').resolves(mockedOrders);
+
+    await orderController.getProductWithOrder(req as Request, res as Response);
+
+    expect(res.status).to.have.been.calledOnceWith(200);
+    expect(res.json).to.have.been.calledOnceWith(mockedOrders);
+  });
+
+  it('deve responder com status 500 quando getOrderWithProducts lança um erro', async function () {
+    sinon.stub(orderService, 'getOrderWithProducts').rejects(new Error('Erro de teste'));
+
+    await orderController.getProductWithOrder(req as Request, res as Response);
+
+    expect(res.status).to.have.been.calledOnceWith(500);
+  
+    expect(res.send).to.have.been.calledOnceWith('Ocorreu um erro ao processar sua solicitação');
+  });
 });
