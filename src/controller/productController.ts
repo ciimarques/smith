@@ -12,6 +12,12 @@ async function productCreate(req: Request, res: Response): Promise<void> {
   }
 }
 
+async function getAllProduct(_req: Request, res: Response): Promise<void> {
+  const product = await productService.productGetAll();
+  res.status(200).json(product);
+}
+
 export default {
   productCreate, 
+  getAllProduct,
 };
