@@ -25,7 +25,7 @@ describe('OrdersController', function () {
     };
   });
   afterEach(function () {
-    sinon.restore(); // Restaura todos os stubs/spies após cada teste
+    sinon.restore(); 
   });
 
   it('deve responder com status 200 e uma lista de pedidos quando getOrderWithProducts for bem-sucedido', async function () {

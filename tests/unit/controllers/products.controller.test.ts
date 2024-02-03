@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import productService from '../../../src/service/product.service';
 import productController from '../../../src/controller/productController'
 
+
 chai.use(sinonChai);
 
 describe('ProductsController', function () {
