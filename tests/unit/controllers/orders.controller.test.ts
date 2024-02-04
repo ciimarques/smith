@@ -12,8 +12,6 @@ chai.use(sinonChai);
 describe('OrdersController', function () {
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let statusSpy: sinon.SinonSpy;
-  let jsonSpy: sinon.SinonSpy;
 
   beforeEach(function () {
     sinon.restore();
