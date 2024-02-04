@@ -64,7 +64,7 @@ describe('ProductsService', function () {
         "orderId": 1
       },
     ];
-    sinon.stub(productService, 'productGetAll').resolves(products as any);
+    sinon.stub(ProductModel, 'findAll').resolves(products as any);
 
     const result = await productService.productGetAll()
 
